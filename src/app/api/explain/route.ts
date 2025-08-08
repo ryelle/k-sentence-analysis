@@ -41,10 +41,10 @@ export async function POST(req: Request) {
 					),
 				}),
 			}),
-			prompt: `Can you break down the Korean grammar and vocab in the following sentence?\n${input}`,
+			prompt: `Can you break down the Korean grammar and vocabulary in the following sentence? Identify and translate all of the words. Identify some key grammatical constructions to know, and explain them in English.\n${input}`,
 		});
 	} catch (error) {
-		console.log(result, error);
+		console.log(JSON.stringify(result), error);
 		return;
 	}
 	cache.set(key, result.object);

@@ -6,7 +6,7 @@ import { type ExplainAnswer } from "@/types";
 import styles from "./explainer.module.css";
 
 const fetcher = (input: string) => {
-	return fetch('/api/chat', { method: "POST", body: JSON.stringify({ input }) }).then((res) =>
+	return fetch('/api/explain', { method: "POST", body: JSON.stringify({ input }) }).then((res) =>
 		res.json(),
 	);
 };
@@ -36,7 +36,11 @@ function getHighlightedWords(
 }
 
 export default function Explainer({ input }: { input: string }) {
-	const { data, isLoading } = useSWR<ExplainAnswer>(input, fetcher);
+	const { data, isLoading } = useSWR<ExplainAnswer>(input, fetcher, {
+		// Don't need to revalided, the language isn't going to change.
+		revalidateOnFocus: false,
+		revalidateOnReconnect: false
+	});
 	if (!data || isLoading) {
 		return (
 			<>

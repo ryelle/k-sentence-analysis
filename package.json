@@ -9,10 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^2.0.7",
+    "@ai-sdk/react": "^2.0.8",
+    "ai": "^5.0.8",
     "next": "15.4.6",
     "react": "19.1.0",
     "react-aria-components": "^1.11.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "swr": "^2.3.4",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

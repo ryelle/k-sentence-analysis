@@ -1,0 +1,23 @@
+.heading,
+.heading-placeholder {
+    font-size: 1.5rem;
+}
+
+.heading-placeholder span {
+    padding: 5px 3px;
+    background: #0001;
+}
+
+.placeholder {
+    height: 10rem;
+    background: #0001;
+}
+
+.subheading {
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.item p + p {
+    margin-top: calc(var(--spacing) * 0.5);
+}

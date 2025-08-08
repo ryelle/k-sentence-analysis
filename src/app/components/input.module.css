@@ -1,0 +1,7 @@
+.form {
+    margin-block-end: var(--spacing);
+}
+
+.input {
+    width: 100%;
+}

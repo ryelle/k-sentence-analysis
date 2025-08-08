@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container, Main, Sidebar } from "@/app/components/layout";
+import Input from "@/app/components/input";
 
 const examples = [
 	"아이스 아메리카노 두 잔 주세요.",
@@ -13,12 +14,7 @@ export default function Home() {
 			<Sidebar />
 			<Main>
 				<h2>Enter your sentence</h2>
-				<input type="text" lang="ko-KR" />
-				<p>
-					This uses [ChatGPT whatever-model] to break down sentences into component parts
-					for studying Korean. It will output a translation with grammar points for
-					reference.
-				</p>
+				<Input />
 				<div>
 					<h3>Example sentences</h3>
 					<ul>
@@ -29,6 +25,11 @@ export default function Home() {
 						))}
 					</ul>
 				</div>
+				<p>
+					This uses [ChatGPT whatever-model] to break down sentences into component parts
+					for studying Korean. It will output a translation with grammar points for
+					reference.
+				</p>
 			</Main>
 		</Container>
 	);

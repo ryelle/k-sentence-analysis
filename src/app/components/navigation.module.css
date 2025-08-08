@@ -1,0 +1,20 @@
+
+.links {
+	list-style: none;
+	padding: 0;
+	margin-block-start: calc(var(--spacing) * 0.5);
+	margin-inline: calc(var(--spacing) * -1);
+}
+
+.links li {
+	margin-block-end: calc(var(--spacing) * 0.25);
+	padding: calc(var(--spacing) * 0.25) var(--spacing);
+}
+
+.links li:has(a[aria-current="page"]) {
+	background: var(--background-03);
+}
+
+.links a {
+	display: block;
+}

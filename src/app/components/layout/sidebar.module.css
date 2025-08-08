@@ -1,0 +1,15 @@
+.sidebar {
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--spacing) * 2);
+	padding: calc(var(--spacing) * 3) var(--spacing);
+	background: var(--background-02);
+}
+
+.sidebar header {
+	text-align: center;
+}
+
+.sidebar h1 {
+	margin-block-end: var(--spacing);
+}

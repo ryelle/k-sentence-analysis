@@ -1,0 +1,44 @@
+.button {
+	padding: 4px 2px;
+	border: 1px solid var(--background-01);
+	background: var(--highlight-01);
+	font-size: inherit;
+
+	&:nth-of-type(8n+2) {
+		background: var(--highlight-04);
+	}
+
+	&:nth-of-type(8n+3) {
+		background: var(--highlight-06);
+	}
+
+	&:nth-of-type(8n+4) {
+		background: var(--highlight-02);
+	}
+
+	&:nth-of-type(8n+5) {
+		background: var(--highlight-05);
+	}
+
+	&:nth-of-type(8n+6) {
+		background: var(--highlight-03);
+	}
+
+	&:nth-of-type(8n+7) {
+		background: var(--highlight-07);
+	}
+}
+
+.tooltip {
+	position: relative;
+	top: calc(var(--spacing) * -0.5);
+	padding: calc(var(--spacing) * 0.5);
+	max-width: 16rem;
+	/* fixes FF gap */
+	transform: translate3d(0, 0, 0);
+	forced-color-adjust: none;
+	background: var(--foreground-01);
+	color: var(--background-01);
+	outline: none;
+	border-radius: 4px;
+}

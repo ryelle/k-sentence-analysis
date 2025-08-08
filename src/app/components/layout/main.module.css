@@ -1,0 +1,27 @@
+.main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: calc(var(--spacing) * 2);
+	width: 100%;
+	max-width: 34rem;
+	padding: calc(var(--spacing) * 3) var(--spacing);
+}
+
+.main h3 {
+	margin-block-end: var(--spacing);
+}
+
+.main ul {
+	padding-inline-start: calc(var(--spacing) * 2);
+}
+
+.main li {
+	margin-block-end: calc(var(--spacing) * 0.5);
+}
+
+@media (max-width: 790px) {
+	.main {
+		align-self: center;
+	}
+}

@@ -1,0 +1,14 @@
+.page {
+	display: grid;
+	grid-template-columns: 18rem 1fr;
+	align-items: stretch;
+	justify-items: center;
+	min-height: 100svh;
+}
+
+@media (max-width: 790px) {
+	.page {
+		display: flex;
+		flex-direction: column;
+	}
+}

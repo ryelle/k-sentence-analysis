@@ -1,13 +1,24 @@
 :root {
-	--background: #ffffff;
-	--foreground: #171717;
+	--background-01: oklch(1 0 0); /* white */
+	--background-02: oklch(0.95 0.002 200); /* light grey */
+	--background-03: #C4C9CB; /* med-grey, for bgs only */
+
+	--foreground-02: oklch(0.46 0.02 224); /* dark grey */
+	--foreground-01: oklch(0.2 0.02 224); /* very dark grey */
+
+	--spacing: 1rem;
+
+	--highlight-01: #FFF0F2;
+	--highlight-02: #FFF1E7;
+	--highlight-03: #FAF5E6;
+	--highlight-04: #F2F8E9;
+	--highlight-05: #E9FAF3;
+	--highlight-06: #E7F9FF;
+	--highlight-07: #F4EFFE;
 }
 
 @media (prefers-color-scheme: dark) {
-	:root {
-		--background: #0a0a0a;
-		--foreground: #ededed;
-	}
+	:root {}
 }
 
 html,
@@ -17,11 +28,16 @@ body {
 }
 
 body {
-	color: var(--foreground);
-	background: var(--background);
-	font-family: Arial, Helvetica, sans-serif;
+	color: var(--foreground-01);
+	background: var(--background-01);
+	font-family: var(--font-ibm-plex);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+:lang(ko) {
+	font-family: var(--font-ibm-plex-kr);
+	word-break: keep-all;
 }
 
 * {
@@ -30,9 +46,63 @@ body {
 	margin: 0;
 }
 
+h1 {
+	font-family: var(--font-orbit);
+	font-size: 2.25rem;
+	line-height: 1.2;
+}
+
+h2 {
+	font-weight: 600;
+	font-size: 1rem;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+h3 {
+	font-weight: 500;
+}
+
 a {
 	color: inherit;
 	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+button:focus-visible,
+a:focus-visible {
+	outline: 1px dashed currentcolor;
+	outline-offset: 2px;
+	border-radius: 8px;
+}
+
+input[type="text"] {
+	padding: calc(var(--spacing) * 0.75);
+	font-size: 1rem;
+	line-height: 1.6;
+	border: 2px solid var(--foreground-02);
+	border-radius: 8px;
+}
+
+input[type="text"]:focus {
+	outline-offset: 2px;
+	outline: 1px dashed currentcolor;
+}
+
+/* Text meant only for screen readers. */
+.screen-reader-text {
+	border: 0;
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal !important;
 }
 
 @media (prefers-color-scheme: dark) {

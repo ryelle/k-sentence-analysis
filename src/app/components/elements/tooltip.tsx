@@ -4,12 +4,12 @@ import { Button, Tooltip, TooltipTrigger, type TooltipProps } from "react-aria-c
 
 import styles from "./tooltip.module.css";
 
-interface MyTooltipProps extends Omit<TooltipProps, "children"> {
+interface Props extends Omit<TooltipProps, "children"> {
 	title: string;
 	children: React.ReactNode;
 }
 
-export default function WordTooltip({ children, title, ...props }: MyTooltipProps) {
+export default function WordTooltip({ children, title, ...props }: Props) {
 	return (
 		<TooltipTrigger delay={0}>
 			<Tooltip {...props}>

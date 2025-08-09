@@ -4,4 +4,6 @@
 
 .input {
     width: 100%;
+    color: inherit;
+    background: var(--background-01);
 }

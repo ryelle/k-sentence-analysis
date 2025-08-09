@@ -3,6 +3,7 @@
 	border: 1px solid var(--background-01);
 	background: var(--highlight-01);
 	font-size: inherit;
+	color: inherit;
 
 	&:nth-of-type(8n+2) {
 		background: var(--highlight-04);
@@ -31,7 +32,7 @@
 
 .tooltip {
 	position: relative;
-	top: calc(var(--spacing) * -0.5);
+	bottom: calc(var(--spacing) * -0.5);
 	padding: calc(var(--spacing) * 0.5);
 	max-width: 16rem;
 	/* fixes FF gap */

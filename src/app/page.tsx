@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container, Main, Sidebar } from "@/app/components/layout";
-import Input from "@/app/components/input";
+import Input from "@/app/components/elements/input";
 
 const examples = [
 	"아이스 아메리카노 두 잔 주세요.",
@@ -14,7 +14,7 @@ export default function Home() {
 			<Sidebar />
 			<Main>
 				<h2>Enter your sentence</h2>
-				<Input />
+				<Input label="Enter your sentence" />
 				<div>
 					<h3>Example sentences</h3>
 					<ul>

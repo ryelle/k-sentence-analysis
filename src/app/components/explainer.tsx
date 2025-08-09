@@ -1,7 +1,7 @@
 "use client";
 
 import useSWR from "swr";
-import Tooltip from "@/app/components/tooltip";
+import Tooltip from "@/app/components/elements/tooltip";
 import { type ExplainAnswer } from "@/types";
 import styles from "./explainer.module.css";
 

@@ -4,6 +4,7 @@
 	gap: calc(var(--spacing) * 2);
 	padding: calc(var(--spacing) * 3) var(--spacing);
 	background: var(--background-02);
+	border-right: 2px solid var(--background-03);
 }
 
 .sidebar header {

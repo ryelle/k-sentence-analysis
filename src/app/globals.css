@@ -1,24 +1,45 @@
 :root {
-	--background-01: oklch(1 0 0); /* white */
-	--background-02: oklch(0.95 0.002 200); /* light grey */
-	--background-03: #C4C9CB; /* med-grey, for bgs only */
+	--background-01: oklch(1 0 0);
+	--background-02: oklch(0.98 0.002 200);
+	--background-03: oklch(0.95 0.002 200);
 
-	--foreground-02: oklch(0.46 0.02 224); /* dark grey */
-	--foreground-01: oklch(0.2 0.02 224); /* very dark grey */
+	--accent-01: #E94F37;
+
+	--foreground-02: oklch(0.46 0.02 224);
+	--foreground-01: oklch(0.2 0.02 224);
 
 	--spacing: 1rem;
 
-	--highlight-01: #FFF0F2;
-	--highlight-02: #FFF1E7;
-	--highlight-03: #FAF5E6;
-	--highlight-04: #F2F8E9;
-	--highlight-05: #E9FAF3;
-	--highlight-06: #E7F9FF;
-	--highlight-07: #F4EFFE;
+	--highlight-01: oklch(0.95 0.02  10);
+	--highlight-02: oklch(0.95 0.02  60);
+	--highlight-03: oklch(0.95 0.02  90);
+	--highlight-04: oklch(0.95 0.02 125);
+	--highlight-05: oklch(0.95 0.02 170);
+	--highlight-06: oklch(0.95 0.02 220);
+	--highlight-07: oklch(0.95 0.02 300);
 }
 
 @media (prefers-color-scheme: dark) {
-	:root {}
+	:root {
+		--background-01: oklch(0.20 0.020 224);
+		--background-02: oklch(0.25 0.020 224);
+		--background-03: oklch(0.30 0.020 224);
+
+		--accent-01: #3F88C5;
+
+		--foreground-02: oklch(0.8 0.002 200);
+		--foreground-01: oklch(0.95 0.002 200);
+
+		--spacing: 1rem;
+
+		--highlight-01: oklch(0.4 0.020  10);
+		--highlight-02: oklch(0.4 0.020  60);
+		--highlight-03: oklch(0.4 0.020  90);
+		--highlight-04: oklch(0.4 0.020 125);
+		--highlight-05: oklch(0.4 0.020 170);
+		--highlight-06: oklch(0.4 0.020 220);
+		--highlight-07: oklch(0.4 0.020 300);
+	}
 }
 
 html,
@@ -57,10 +78,12 @@ h2 {
 	font-size: 1rem;
 	text-transform: uppercase;
 	letter-spacing: 1px;
+	line-height: 1.2;
 }
 
 h3 {
 	font-weight: 500;
+	line-height: 1.2;
 }
 
 a {

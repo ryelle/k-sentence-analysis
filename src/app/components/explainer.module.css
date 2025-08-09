@@ -1,23 +1,35 @@
 .heading,
 .heading-placeholder {
-    font-size: 1.5rem;
+	font-size: 1.5rem;
+	text-align: center;
 }
 
 .heading-placeholder span {
-    padding: 5px 3px;
-    background: #0001;
+	padding: 5px 3px;
+	background: #0001;
 }
 
 .placeholder {
-    height: 10rem;
-    background: #0001;
+	height: 10rem;
+	background: #0001;
 }
 
 .subheading {
-    font-style: italic;
-    font-size: 0.9rem;
+	font-size: 1.25rem;
+	line-height: 1.5;
+	text-align: center;
 }
 
-.item p + p {
-    margin-top: calc(var(--spacing) * 0.5);
+.item {
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--spacing) * 0.5);
+	padding: var(--spacing);
+	background: var(--background-02);
+	border: 2px solid var(--background-03);
+	border-radius: 8px;
+}
+
+.item h3 {
+	margin-block-end: 0 !important;
 }

@@ -34,7 +34,7 @@ export default function Navigation({ title }: Props) {
 			<ul className={styles.links}>
 				{history.map((item) => (
 					<li key={item} lang="ko-KR">
-						<Link href={`/${item}`} aria-current={item === slug ? "page" : false}>
+						<Link href={`/${encodeURIComponent(item)}`} aria-current={item === slug ? "page" : false}>
 							{item}
 						</Link>
 					</li>

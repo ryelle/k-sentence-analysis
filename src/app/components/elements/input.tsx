@@ -6,9 +6,10 @@ import styles from "./input.module.css";
 interface Props {
 	label: string;
 	placeholder?: string;
+	autofocus?: boolean;
 }
 
-export default function Input({ label, placeholder = "" }: Props) {
+export default function Input({ label, placeholder = "", autofocus = false }: Props) {
 	const router = useRouter();
 	const [value, setValue] = useState("");
 	const htmlId = useId();
@@ -32,6 +33,7 @@ export default function Input({ label, placeholder = "" }: Props) {
 				value={value}
 				onChange={handleChange}
 				placeholder={placeholder}
+				autoFocus={autofocus}
 			/>
 		</form>
 	);

@@ -14,7 +14,7 @@ export default function Home() {
 			<Sidebar />
 			<Main>
 				<h2>Enter your sentence</h2>
-				<Input label="Enter your sentence" />
+				<Input label="Enter your sentence" autofocus />
 				<div>
 					<h3>Example sentences</h3>
 					<ul>

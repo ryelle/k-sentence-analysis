@@ -1,0 +1,23 @@
+.button {
+	position: relative;
+	padding: calc(var(--spacing) * 0.5) var(--spacing);
+	background: var(--background-01);
+	border: 2px solid var(--foreground-02);
+	border-radius: 4px;
+
+	&::before {
+		position: absolute;
+		inset: auto var(--spacing) 4px var(--spacing);
+		height: 4px;
+		border-radius: 4px;
+		background: var(--accent-01);
+	}
+
+	&:hover {
+		text-decoration: none;
+		background: var(--background-03);
+		border-color: var(--accent-01);
+		outline: 2px solid var(--background-01);
+		outline-offset: -4px;
+	}
+}

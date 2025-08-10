@@ -1,0 +1,21 @@
+.container {
+	position: absolute;
+	top: var(--spacing);
+	right: var(--spacing);
+}
+
+.button {
+	padding: calc(var(--spacing) * 0.5);
+	display: inline-block;
+	border-radius: 100%;
+	border-color: rgba(from var(--foreground-02) r g b / 0.5);
+
+	&:focus-visible {
+		border-radius: 100%;
+	}
+
+	& svg {
+		vertical-align: middle;
+		fill: var(--foreground-02);
+	}
+}

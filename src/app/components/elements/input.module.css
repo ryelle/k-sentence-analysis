@@ -1,9 +1,9 @@
 .form {
-    margin-block-end: var(--spacing);
+	margin-block-end: var(--spacing);
 }
 
 .input {
-    width: 100%;
-    color: inherit;
-    background: var(--background-01);
+	width: 100%;
+	color: inherit;
+	background: var(--background-01);
 }

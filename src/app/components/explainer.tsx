@@ -6,7 +6,7 @@ import { type ExplainAnswer } from "@/types";
 import styles from "./explainer.module.css";
 
 const fetcher = (input: string) => {
-	return fetch('/api/explain', { method: "POST", body: JSON.stringify({ input }) }).then((res) =>
+	return fetch("/api/explain", { method: "POST", body: JSON.stringify({ input }) }).then((res) =>
 		res.json(),
 	);
 };
@@ -39,7 +39,7 @@ export default function Explainer({ input }: { input: string }) {
 	const { data, isLoading } = useSWR<ExplainAnswer>(input, fetcher, {
 		// Don't need to revalided, the language isn't going to change.
 		revalidateOnFocus: false,
-		revalidateOnReconnect: false
+		revalidateOnReconnect: false,
 	});
 	if (!data || isLoading) {
 		return (
@@ -54,7 +54,7 @@ export default function Explainer({ input }: { input: string }) {
 
 	const {
 		sentence,
-        translation,
+		translation,
 		breakdown: { words, grammar },
 	} = data;
 	const wordsElement = getHighlightedWords(sentence, words);
@@ -62,7 +62,7 @@ export default function Explainer({ input }: { input: string }) {
 	return (
 		<>
 			<div className={styles.heading}>{wordsElement}</div>
-            <div className={styles.subheading}>{translation}</div>
+			<div className={styles.subheading}>{translation}</div>
 			{grammar.map(({ structure, explanation, example }, i) => (
 				<div className={styles.item} key={i}>
 					<h3 lang="ko-KR">{structure}</h3>

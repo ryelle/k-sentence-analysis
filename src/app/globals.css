@@ -9,6 +9,7 @@
 	--foreground-01: oklch(0.2 0.02 224);
 
 	--spacing: 1rem;
+	--size--sidebar: 18rem;
 
 	--highlight-01: oklch(0.95 0.02  10);
 	--highlight-02: oklch(0.95 0.02  60);
@@ -93,6 +94,9 @@ a {
 
 a:hover {
 	text-decoration: underline;
+	text-decoration-color: var(--accent-01);
+	text-decoration-thickness: 0.15em;
+	text-underline-offset: 0.15em;
 }
 
 button:focus-visible,

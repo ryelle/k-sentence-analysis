@@ -14,3 +14,9 @@
 .sidebar h1 {
 	margin-block-end: var(--spacing);
 }
+
+@media (min-width: 791px) {
+	.sidebar {
+		width: var(--size--sidebar);
+	}
+}

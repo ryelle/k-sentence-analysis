@@ -7,6 +7,7 @@ type History = string[];
 type HistoryContextType = {
 	history: History;
 	pushHistory: (slug: string) => void;
+	removeHistory: (slug: string) => void;
 };
 
 const HistoryContext = createContext<HistoryContextType | undefined>(undefined);
@@ -18,8 +19,13 @@ export function HistoryProvider({ children }: { children: ReactNode }) {
 		setHistory([slug, ...list]);
 	}
 
+	function removeHistory(slug: string) {
+		const list = history.filter((item) => slug !== item);
+		setHistory(list);
+	}
+
 	return (
-		<HistoryContext.Provider value={{ history, pushHistory }}>
+		<HistoryContext.Provider value={{ history, pushHistory, removeHistory }}>
 			{children}
 		</HistoryContext.Provider>
 	);

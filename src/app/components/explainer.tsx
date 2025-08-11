@@ -3,6 +3,7 @@
 import useSWR from "swr";
 import Tooltip from "@/app/components/elements/tooltip";
 import { type ExplainAnswer } from "@/types";
+import { type FragmentList, getWordFragments } from "@/app/utils/get-word-fragments";
 import styles from "./explainer.module.css";
 
 const fetcher = (input: string) => {
@@ -16,22 +17,18 @@ function getHighlightedWords(
 	vocab: Array<{ korean: string; meaning: string }>,
 ): Array<React.ReactNode | string> {
 	const words: Array<React.ReactNode | string> = [];
-	let index = 0;
-	vocab.forEach(({ korean, meaning }, i) => {
-		const nextIndex = sentence.indexOf(korean);
-		if (index < nextIndex) {
-			words.push(sentence.substring(index, nextIndex));
+	const list: FragmentList = getWordFragments(sentence, vocab);
+	list.forEach(({ word, meaning }, i) => {
+		if (meaning) {
+			words.push(
+				<Tooltip key={i} title={meaning}>
+					{word}
+				</Tooltip>,
+			);
+		} else {
+			words.push(word);
 		}
-		words.push(
-			<Tooltip key={i} title={meaning}>
-				{korean}
-			</Tooltip>,
-		);
-		index = nextIndex + korean.length;
 	});
-	if (index < sentence.length) {
-		words.push(sentence.substring(index));
-	}
 	return words;
 }
 

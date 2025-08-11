@@ -5,7 +5,8 @@ export type ExplainAnswer = {
 		words: Array<{
 			korean: string;
 			meaning: string;
-			type: string;
+			// Currently omitting these from the response because they're not used in the UI.
+			type?: string;
 			notes?: string;
 		}>;
 		grammar: Array<{

@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 	let result;
 	try {
 		result = await generateObject({
-			model: openai("gpt-5-nano"),
+			model: openai("gpt-4.1-nano"),
 			schema: z.object({
 				sentence: z.string(),
 				translation: z.string(),
@@ -28,8 +28,8 @@ export async function POST(req: Request) {
 						z.object({
 							korean: z.string(),
 							meaning: z.string(),
-							type: z.string(),
-							notes: z.string().optional(),
+							// type: z.string(),
+							// notes: z.string().optional(),
 						}),
 					),
 					grammar: z.array(
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 					),
 				}),
 			}),
-			prompt: `Can you break down the Korean grammar and vocabulary in the following sentence? Identify and translate all of the words. Identify some key grammatical constructions to know, and explain them in English.\n${input}`,
+			prompt: `Can you break down the Korean grammar and vocabulary in the following sentence? Identify and translate all of the words in order. Identify some key grammatical constructions to know, and explain them in English.\n${input}`,
 		});
 	} catch (error) {
 		console.log(JSON.stringify(result), error);

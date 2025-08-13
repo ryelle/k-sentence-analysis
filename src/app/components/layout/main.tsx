@@ -5,5 +5,9 @@ export default function Page({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return <main className={styles.main}>{children}</main>;
+	return (
+		<main className={styles.main}>
+			<div>{children}</div>
+		</main>
+	);
 }

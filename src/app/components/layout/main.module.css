@@ -1,23 +1,30 @@
 .main {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	gap: var(--spacing);
-	width: 100%;
-	max-width: 42rem;
 	padding: calc(var(--spacing) * 3) var(--spacing);
-}
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	overflow: scroll;
 
-.main h3 {
-	margin-block-end: var(--spacing);
-}
+	& > div {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		gap: var(--spacing);
+		width: 100%;
+		max-width: 42rem;
+	}
 
-.main ul {
-	padding-inline-start: calc(var(--spacing) * 2);
-}
+	& h3 {
+		margin-block-end: var(--spacing);
+	}
 
-.main li {
-	margin-block-end: calc(var(--spacing) * 0.5);
+	& ul {
+		padding-inline-start: calc(var(--spacing) * 2);
+	}
+
+	& li {
+		margin-block-end: calc(var(--spacing) * 0.5);
+	}
 }
 
 @media (max-width: 790px) {

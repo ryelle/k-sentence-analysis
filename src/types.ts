@@ -16,3 +16,16 @@ export type ExplainAnswer = {
 		}>;
 	};
 };
+
+export type ExplainResponse = {
+	error: false;
+	result: ExplainAnswer;
+};
+
+export type ExplainError = {
+	error: {
+		message: string;
+		details?: string;
+	};
+	result: false;
+};

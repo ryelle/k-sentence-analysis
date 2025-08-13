@@ -2,9 +2,11 @@
 
 import useSWR from "swr";
 import Tooltip from "@/app/components/elements/tooltip";
-import { type ExplainAnswer } from "@/types";
+import { type ExplainResponse, type ExplainError } from "@/types";
 import { type FragmentList, getWordFragments } from "@/app/utils/get-word-fragments";
 import styles from "./explainer.module.css";
+import Loader from "./elements/loader";
+import Card from "./elements/card";
 
 const fetcher = (input: string) => {
 	return fetch("/api/explain", { method: "POST", body: JSON.stringify({ input }) }).then((res) =>
@@ -33,33 +35,41 @@ function getHighlightedWords(
 }
 
 export default function Explainer({ input }: { input: string }) {
-	const { data, isLoading } = useSWR<ExplainAnswer>(input, fetcher, {
-		// Don't need to revalided, the language isn't going to change.
+	const { data, isLoading, error } = useSWR<ExplainResponse | ExplainError>(input, fetcher, {
+		// Don't need to revalidate, the language isn't going to change.
 		revalidateOnFocus: false,
 		revalidateOnReconnect: false,
 	});
-	if (!data || isLoading) {
+	console.log(data, isLoading, error);
+
+	if (error) {
+		// This is a request-level error (malformed response, etc), ideally
+		// would never happen, and definitely not an error I would show to a
+		// regular user.
+		return <Card title={<span>{error.toString()}</span>} />;
+	}
+
+	if (isLoading || !data) {
 		return (
-			<>
-				<div className={styles["heading-placeholder"]}>
-					<span>{decodeURIComponent(input)}</span>
-				</div>
-				<div className={styles.placeholder}></div>
-			</>
+			<Card isLoading title={<span>{decodeURIComponent(input)}</span>}>
+				<Loader />
+			</Card>
 		);
+	}
+
+	if (data.error) {
+		return <Card title={<span>{data.error.message}</span>}>{data.error.details}</Card>;
 	}
 
 	const {
 		sentence,
 		translation,
 		breakdown: { words, grammar },
-	} = data;
+	} = data.result;
 	const wordsElement = getHighlightedWords(sentence, words);
 
 	return (
-		<>
-			<div className={styles.heading}>{wordsElement}</div>
-			<div className={styles.subheading}>{translation}</div>
+		<Card title={wordsElement} subtitle={translation}>
 			{grammar.map(({ structure, explanation, example }, i) => (
 				<div className={styles.item} key={i}>
 					<h3 lang="ko-KR">{structure}</h3>
@@ -67,6 +77,6 @@ export default function Explainer({ input }: { input: string }) {
 					<p>{example}</p>
 				</div>
 			))}
-		</>
+		</Card>
 	);
 }

@@ -1,0 +1,36 @@
+.heading {
+	font-size: 1.5rem;
+	text-align: center;
+}
+
+.subtitle {
+	margin-block-start: calc(var(--spacing) * 0.5);
+	font-size: 1.25rem;
+	line-height: 1.5;
+	text-align: center;
+}
+
+.body {
+	margin-block-start: calc(var(--spacing) * 2);
+	display: flex;
+	gap: var(--spacing);
+	flex-direction: column;
+}
+
+.body.placeholder {
+	align-items: center;
+}
+
+@keyframes pulse {
+	0% {
+		background: #0001;
+	}
+
+	50% {
+		background: #0000;
+	}
+
+	100% {
+		background: #0001;
+	}
+}

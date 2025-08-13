@@ -1,7 +1,8 @@
 import { openai } from "@ai-sdk/openai";
-import { generateObject } from "ai";
+import { generateObject, NoObjectGeneratedError, TypeValidationError } from "ai";
 import { z } from "zod";
 import { type ExplainAnswer } from "@/types";
+import { NextResponse } from "next/server";
 
 const cache = new Map<string, ExplainAnswer>();
 
@@ -12,7 +13,7 @@ export async function POST(req: Request) {
 	if (cache.has(key)) {
 		console.log(`Cache hit for ${input}.`);
 		const object = cache.get(key);
-		return new Response(JSON.stringify(object));
+		return NextResponse.json({ result: object, error: false });
 	}
 
 	console.log(`Cache miss for  ${input}, requesting from OpenAI.`);
@@ -41,13 +42,31 @@ export async function POST(req: Request) {
 					),
 				}),
 			}),
-			prompt: `Can you break down the Korean grammar and vocabulary in the following sentence? Identify and translate all of the words in order. Identify some key grammatical constructions to know, and explain them in English.\n${input}`,
+			prompt: `Can you break down the Korean grammar and vocabulary in the following sentence? Identify and translate all of the words into English, include the exact phrase in the sentence. Identify some key grammatical constructions to know, and explain them in English.\n${input}`,
 		});
+		if (result.object.sentence !== input) {
+			throw new Error("Output sentence does not match input.", {
+				cause: `The input sentence was ${input}, but what the AI processed was ${result.object.sentence}.`,
+			});
+		}
 	} catch (error) {
-		console.log(JSON.stringify(result), error);
-		return;
+		if (NoObjectGeneratedError.isInstance(error) || TypeValidationError.isInstance(error)) {
+			return NextResponse.json(
+				{ error: { message: error.message, details: "" } },
+				{ status: 500 },
+			);
+		} else if (error instanceof Error) {
+			return NextResponse.json(
+				{ error: { message: error.message, details: error.cause } },
+				{ status: 500 },
+			);
+		}
+		return NextResponse.json(
+			{ error: { message: "There was an error in the request." } },
+			{ status: 500 },
+		);
 	}
 	cache.set(key, result.object);
 
-	return result.toJsonResponse();
+	return NextResponse.json({ result: result.object, error: false });
 }

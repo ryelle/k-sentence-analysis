@@ -17,12 +17,12 @@
 }
 
 .card-front {
-	animation: flipY 2500ms infinite cubic-bezier(0.9,-0.1,0.1,1.1);
+	animation: flipY 2500ms infinite cubic-bezier(0.9, -0.1, 0.1, 1.1);
 }
 
 .card-back {
 	transform: rotateY(180deg);
-	animation: flipYBack 2500ms infinite cubic-bezier(0.9,-0.1,0.1,1.1);
+	animation: flipYBack 2500ms infinite cubic-bezier(0.9, -0.1, 0.1, 1.1);
 }
 
 @keyframes flipY {

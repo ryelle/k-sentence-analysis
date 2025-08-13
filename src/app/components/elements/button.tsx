@@ -26,13 +26,13 @@ export default function Button({
 }: ButtonProps | LinkProps) {
 	if (href) {
 		return (
-			<Link href={href} className={`${className} ${styles.button} is-link`}>
+			<Link href={href} className={`${styles.button} ${className} is-link`}>
 				{children}
 			</Link>
 		);
 	}
 	return (
-		<button onClick={onClick} className={`${className} ${styles.button} is-button`}>
+		<button onClick={onClick} className={`${styles.button} ${className} is-button`}>
 			{children}
 		</button>
 	);

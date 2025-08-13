@@ -4,7 +4,7 @@
 	right: var(--spacing);
 }
 
-.button {
+.container .button {
 	padding: calc(var(--spacing) * 0.5);
 	display: inline-block;
 	border-radius: 100%;

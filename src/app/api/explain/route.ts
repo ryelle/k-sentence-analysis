@@ -1,8 +1,10 @@
-import { openai } from "@ai-sdk/openai";
-import { generateObject, NoObjectGeneratedError, TypeValidationError } from "ai";
-import { z } from "zod";
-import { type ExplainAnswer } from "@/types";
 import { NextResponse } from "next/server";
+import { generateObject, NoObjectGeneratedError, TypeValidationError } from "ai";
+import { openai } from "@ai-sdk/openai";
+import { z } from "zod";
+
+import { isKorean } from "@/app/utils/is-korean";
+import { type ExplainAnswer } from "@/types";
 
 const cache = new Map<string, ExplainAnswer>();
 
@@ -19,6 +21,11 @@ export async function POST(req: Request) {
 	console.log(`Cache miss for  ${input}, requesting from OpenAI.`);
 	let result;
 	try {
+		if (!isKorean(input)) {
+			throw new Error("Input sentence must be in Korean.", {
+				cause: `The input sentence was "${input}".`,
+			});
+		}
 		result = await generateObject({
 			model: openai("gpt-4.1-nano"),
 			schema: z.object({

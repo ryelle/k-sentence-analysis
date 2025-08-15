@@ -4,10 +4,13 @@ import Input from "@/app/components/elements/input";
 
 const examples = [
 	"아이스 아메리카노 두 잔 주세요.",
-	"내가 어릴 때는 바다에 수영하러 가곤 했었지.",
-	"콩나물국은 맵지 않아서 먹을 만해요.",
-	"처음 키워 보는 건데 어렵지는 않겠지요?",
-	"어렵지 않으니 따라 해봐요.",
+	"지금 가을이라서 단풍이 정말 아름다울 거예요.",
+	"그 일은 고생할 만한 가치가 없으니까 하지 않는 게 좋겠어요.",
+	"한국어는 공부할 만해요.",
+	"어제는 많이 춥던데 오늘은 따뜻하네요.",
+	"네, 남산에서 본 서울 야경이 아주 아름답던데요.",
+	"아마 커피숍에 있을걸요.",
+	"손님이 없는 걸 보니 저 식당은 음식이 맛없나 봐요.",
 ];
 
 export default function Home() {
@@ -28,7 +31,7 @@ export default function Home() {
 					</ul>
 				</div>
 				<p>
-					This uses [ChatGPT whatever-model] to break down sentences into component parts
+					This uses ChatGPT 4.1 nano to break down sentences into component parts
 					for studying Korean. It will output a translation with grammar points for
 					reference.
 				</p>

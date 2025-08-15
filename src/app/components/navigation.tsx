@@ -28,7 +28,6 @@ export default function Navigation({ title }: Props) {
 		[slug],
 	);
 
-	// @todo Add way to remove items from history.
 	const onDelete = (item: string) => () => {
 		removeHistory(item);
 		if (item === slug) {

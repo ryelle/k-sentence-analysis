@@ -4,6 +4,8 @@ This is a fairly simple app using Next.js and the [AI SDK](https://ai-sdk.dev/) 
 
 This will locally-cache the AI results to avoid repeated calls, but only while the page is open. Sometimes the AI API does not return the full expected object causing an error — trying again usually works.
 
+Read my writeup & see some screenshots: https://ryelle.codes/2025/08/building-a-korean-grammar-breakdown-tool-with-ai-and-next-js/
+
 ## Try it out!
 
 You'll need an OpenAI API key. Once you have it, create a file `.env.local` and add the key like this:

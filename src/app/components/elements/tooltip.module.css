@@ -31,8 +31,10 @@
 }
 
 .tooltip {
+	--arrow-height: calc(var(--spacing) * 0.25);
+	--arrow-width: calc(var(--spacing) * 1);
 	position: relative;
-	bottom: calc(var(--spacing) * -0.5);
+	bottom: calc(var(--arrow-height) * -1);
 	padding: calc(var(--spacing) * 0.5);
 	max-width: 16rem;
 	/* fixes FF gap */
@@ -42,4 +44,18 @@
 	color: var(--background-01);
 	outline: none;
 	border-radius: 4px;
+
+	&::after {
+		content: "";
+		height: var(--arrow-height);
+		width: var(--arrow-width);
+		top: calc(var(--arrow-height) * -1);
+		left: calc(50% - (var(--arrow-width) * 0.5));
+		position: absolute;
+		background-color: inherit;
+		box-sizing: border-box;
+		mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 100'%3E%3Cpath d='M150 0C100 0 100 70 0 100H300C200 70 200 0 150 0Z'/%3E%3C/svg%3E%0A");
+		mask-repeat: no-repeat;
+		mask-position: center top;
+	}
 }

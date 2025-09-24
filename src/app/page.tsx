@@ -11,6 +11,7 @@ const examples = [
 	"네, 남산에서 본 서울 야경이 아주 아름답던데요.",
 	"아마 커피숍에 있을걸요.",
 	"손님이 없는 걸 보니 저 식당은 음식이 맛없나 봐요.",
+    "여행 잘 갔다 왔니?",
 ];
 
 export default function Home() {
@@ -25,7 +26,7 @@ export default function Home() {
 					<ul>
 						{examples.map((item) => (
 							<li key={item} lang="ko-KR">
-								<Link href={`/${item}`}>{item}</Link>
+								<Link href={`/${encodeURIComponent(item)}`}>{item}</Link>
 							</li>
 						))}
 					</ul>

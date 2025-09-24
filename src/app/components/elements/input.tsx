@@ -18,7 +18,7 @@ export default function Input({ label, placeholder = "", autofocus = false }: Pr
 	};
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		router.push(`/${encodeURIComponent(value.replace(/^\s/, "").replace(/\s$/, ""))}`);
+		router.push(`/${encodeURIComponent(value.trim())}`);
 	};
 	return (
 		<form onSubmit={handleSubmit} className={styles.form}>

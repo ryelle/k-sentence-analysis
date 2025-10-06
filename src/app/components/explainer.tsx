@@ -8,10 +8,21 @@ import styles from "./explainer.module.css";
 import Loader from "./elements/loader";
 import Card from "./elements/card";
 
-const fetcher = (input: string) => {
-	return fetch("/api/explain", { method: "POST", body: JSON.stringify({ input }) }).then((res) =>
-		res.json(),
-	);
+const fetcher = async (input: string) => {
+	try {
+		const response = await fetch("/api/explain", {
+			method: "POST",
+			body: JSON.stringify({ input }),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.error("Fetch error:", error);
+		throw error;
+	}
 };
 
 function getHighlightedWords(
@@ -40,7 +51,6 @@ export default function Explainer({ input }: { input: string }) {
 		revalidateOnFocus: false,
 		revalidateOnReconnect: false,
 	});
-	console.log(data, isLoading, error);
 
 	if (error) {
 		// This is a request-level error (malformed response, etc), ideally

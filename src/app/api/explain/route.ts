@@ -4,7 +4,8 @@ import { openai } from "@ai-sdk/openai";
 import { z } from "zod";
 
 import { isKorean } from "@/app/utils/is-korean";
-import { type ExplainAnswer } from "@/types";
+import { ClientError, CLIENT_ERROR_CODES } from "@/app/utils/errors";
+import type { ExplainAnswer } from "@/types";
 
 const cache = new Map<string, ExplainAnswer>();
 const pendingRequests = new Map<string, Promise<ExplainAnswer>>();

@@ -18,7 +18,17 @@ export default function Input({ label, placeholder = "", autofocus = false }: Pr
 	};
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		router.push(`/${encodeURIComponent(value.trim())}`);
+		const trimmed = value.trim();
+		if (!trimmed) {
+			return;
+		}
+		if (trimmed.length > 500) {
+			return;
+		}
+		if (/<script|javascript:|data:/i.test(trimmed)) {
+			return;
+		}
+		router.push(`/${encodeURIComponent(trimmed)}`);
 	};
 	return (
 		<form onSubmit={handleSubmit} className={styles.form}>

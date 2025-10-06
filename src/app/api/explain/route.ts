@@ -11,6 +11,14 @@ const cache = new Map<string, ExplainAnswer>();
 const pendingRequests = new Map<string, Promise<ExplainAnswer>>();
 
 export async function POST(req: Request) {
+	const error = validateRequest(req);
+	if (error) {
+		return NextResponse.json(
+			{ error: { message: error.message, details: error.details, code: error.code } },
+			{ status: error.status },
+		);
+	}
+
 	const data = await req.json();
 	const input = decodeURIComponent(data.input);
 	const key = input;
@@ -66,6 +74,25 @@ export async function POST(req: Request) {
 		);
 	} finally {
 		pendingRequests.delete(key);
+	}
+}
+
+function validateRequest(req: Request): ClientError | undefined {
+	const contentLength = req.headers.get("content-length");
+	if (contentLength) {
+		if (parseInt(contentLength) > 1024) {
+			return new ClientError(
+				"Input sentence is too long, enter a single sentence at a time.",
+				CLIENT_ERROR_CODES.INPUT_SIZE,
+				"",
+				413,
+			);
+		} else if (parseInt(contentLength) < 18) {
+			return new ClientError(
+				"Input sentence is too short, enter a full sentence.",
+				CLIENT_ERROR_CODES.INPUT_SIZE,
+			);
+		}
 	}
 }
 

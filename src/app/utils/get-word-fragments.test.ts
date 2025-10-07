@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { getWordFragments } from "./get-word-fragments";
+import { WordList, getWordFragments } from "./get-word-fragments";
 
 describe("getWordFragments", () => {
 	test("It should parse a sentence", () => {
@@ -133,6 +133,37 @@ describe("getWordFragments", () => {
 				meaning: "recognition",
 			},
 		];
+		const result = getWordFragments(sentence, words);
+		expect(result.reduce((acc, { word }) => acc + word, "")).toEqual(sentence);
+	});
+
+	test("It should handle incomplete inputs", () => {
+		const sentence = "";
+		const words = [
+			{
+				korean: "This",
+				meaning: "",
+			},
+			{
+				korean: "is",
+				meaning: "",
+			},
+			{
+				korean: "a",
+				meaning: "",
+			},
+			{
+				korean: "sentence",
+				meaning: "",
+			},
+		];
+		const result = getWordFragments(sentence, words);
+		expect(result.reduce((acc, { word }) => acc + word, "")).toEqual(sentence);
+	});
+
+	test("It should handle incomplete inputs", () => {
+		const sentence = "This is a sentence.";
+		const words: WordList = [];
 		const result = getWordFragments(sentence, words);
 		expect(result.reduce((acc, { word }) => acc + word, "")).toEqual(sentence);
 	});

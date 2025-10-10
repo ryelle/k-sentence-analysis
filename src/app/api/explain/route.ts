@@ -5,9 +5,10 @@ import { z } from "zod";
 
 import { isKorean } from "@/app/utils/is-korean";
 import { ClientError, CLIENT_ERROR_CODES } from "@/app/utils/errors";
+import LRUCache from "@/app/utils/cache";
 import type { ExplainAnswer } from "@/types";
 
-const cache = new Map<string, ExplainAnswer>();
+const cache = new LRUCache<string, ExplainAnswer>(100);
 const pendingRequests = new Map<string, Promise<ExplainAnswer>>();
 
 export async function POST(req: Request) {

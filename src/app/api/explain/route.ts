@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { generateObject, NoObjectGeneratedError, TypeValidationError } from "ai";
+import { generateObject, LanguageModel, NoObjectGeneratedError, TypeValidationError } from "ai";
 import { openai } from "@ai-sdk/openai";
+import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 
 import { isKorean } from "@/app/utils/is-korean";
@@ -17,57 +18,59 @@ const pendingRequests = new Map<string, Promise<ExplainAnswer>>();
 
 // Input validation schema
 const RequestBodySchema = z.object({
+	model: z.enum(["openai", "anthropic"]).default("openai"),
 	input: z
 		.string()
 		.min(2 * ENCODED_CHAR, "Input sentence is too short, enter a full sentence")
 		.max(200 * ENCODED_CHAR, "Input sentence is too long, enter a single sentence at a time")
 		.trim(),
 });
+type RequestBody = z.infer<typeof RequestBodySchema>;
+
+const ResponseSchema = z.object({
+	sentence: z.string(),
+	translation: z.string(),
+	breakdown: z.object({
+		words: z.array(
+			z.object({
+				korean: z.string(),
+				meaning: z.string(),
+				// type: z.string(),
+				// notes: z.string().optional(),
+			}),
+		),
+		grammar: z.array(
+			z.object({
+				structure: z.string(),
+				explanation: z.string(),
+				example: z.string().optional(),
+			}),
+		),
+	}),
+});
 
 export async function POST(req: Request) {
-	const error = validateRequest(req);
-	if (error) {
-		return NextResponse.json(
-			{ error: { message: error.message, details: error.details, code: error.code } },
-			{ status: error.status },
-		);
-	}
-
 	// Parse and validate request body
-	let data;
+	let input, model;
 	try {
-		const rawBody = await req.json();
-		const parseResult = RequestBodySchema.safeParse(rawBody);
-
-		if (!parseResult.success) {
+        validateRequest(req);
+		const data = parseRequest(await req.json());
+		model = data.model;
+		input = data.input;
+	} catch (error) {
+		if (ClientError.isInstance(error)) {
 			return NextResponse.json(
-				{
-					error: {
-						message: "Invalid request body",
-						details: parseResult.error.issues.map((issue) => issue.message).join(", "),
-						code: CLIENT_ERROR_CODES.INVALID_INPUT,
-					},
-				},
-				{ status: 400 },
+				{ error: { message: error.message, details: error.details, code: error.code } },
+				{ status: error.status },
 			);
 		}
-
-		data = parseResult.data;
-	} catch {
 		return NextResponse.json(
-			{
-				error: {
-					message: "Invalid JSON in request body",
-					details: "",
-					code: CLIENT_ERROR_CODES.INVALID_INPUT,
-				},
-			},
-			{ status: 400 },
+			{ error: { message: "There was an error in the request." } },
+			{ status: 500 },
 		);
 	}
 
-	const input = decodeURIComponent(data.input);
-	const key = input;
+	const key = `${model}::${input}`;
 
 	// Check cache first
 	if (cache.has(key)) {
@@ -84,7 +87,7 @@ export async function POST(req: Request) {
 	}
 
 	// Create and store pending promise
-	const requestPromise = generateExplanation(input);
+	const requestPromise = generateExplanation({ model, input });
 	pendingRequests.set(key, requestPromise);
 
 	try {
@@ -123,11 +126,11 @@ export async function POST(req: Request) {
 	}
 }
 
-function validateRequest(req: Request): ClientError | undefined {
+function validateRequest(req: Request) {
 	const contentLength = req.headers.get("content-length");
 	if (contentLength) {
 		if (parseInt(contentLength) > 2048) {
-			return new ClientError(
+			throw new ClientError(
 				"Request body is too large.",
 				CLIENT_ERROR_CODES.INPUT_SIZE,
 				"",
@@ -137,39 +140,52 @@ function validateRequest(req: Request): ClientError | undefined {
 	}
 }
 
-async function generateExplanation(input: string): Promise<ExplainAnswer> {
-	console.log(`Cache miss for  ${input}, requesting from OpenAI.`);
+function parseRequest(body: unknown): RequestBody {
+	const parseResult = RequestBodySchema.safeParse(body);
+
+	if (!parseResult.success) {
+		throw new ClientError(
+			"Invalid request body",
+			CLIENT_ERROR_CODES.INVALID_INPUT,
+			parseResult.error.issues.map((issue) => issue.message).join(", "),
+			400,
+		);
+	}
+
+	const data = parseResult.data;
+	const input = decodeURIComponent(data.input);
+	const model = data.model;
+
 	if (!isKorean(input)) {
 		throw new ClientError(
 			"Input sentence must be in Korean.",
 			CLIENT_ERROR_CODES.INVALID_LANGUAGE,
-			`The input sentence was "${input}".`,
+			`The input sentence was "${data.input}".`,
 		);
 	}
 
+	return { input, model };
+}
+
+async function generateExplanation({
+	model,
+	input,
+}: {
+	model: string;
+	input: string;
+}): Promise<ExplainAnswer> {
+	console.log(`Cache miss for  ${input}, requesting from ${model}.`);
+
+	let chosenModel: LanguageModel;
+	if (model === "anthropic") {
+		chosenModel = anthropic("claude-sonnet-4-20250514");
+	} else {
+		chosenModel = openai("gpt-5-nano");
+	}
+
 	const result = await generateObject({
-		model: openai("gpt-5-nano"),
-		schema: z.object({
-			sentence: z.string(),
-			translation: z.string(),
-			breakdown: z.object({
-				words: z.array(
-					z.object({
-						korean: z.string(),
-						meaning: z.string(),
-						// type: z.string(),
-						// notes: z.string().optional(),
-					}),
-				),
-				grammar: z.array(
-					z.object({
-						structure: z.string(),
-						explanation: z.string(),
-						example: z.string().optional(),
-					}),
-				),
-			}),
-		}),
+		model: chosenModel,
+		schema: ResponseSchema,
 		prompt: `Can you break down the Korean grammar and vocabulary in the following sentence? Identify and translate all of the words into English, include the exact phrase in the sentence. Identify some key grammatical constructions to know, and explain them in English.\n${input}`,
 	});
 

@@ -8,8 +8,21 @@ import { ClientError, CLIENT_ERROR_CODES } from "@/app/utils/errors";
 import LRUCache from "@/app/utils/cache";
 import type { ExplainAnswer } from "@/types";
 
+// A CJK character is URL encoded to 3 bytes in UTF-8 format by URI encoding.
+// These are formatted as %XX, so one character is 3x3=9.
+const ENCODED_CHAR = 9;
+
 const cache = new LRUCache<string, ExplainAnswer>(100);
 const pendingRequests = new Map<string, Promise<ExplainAnswer>>();
+
+// Input validation schema
+const RequestBodySchema = z.object({
+	input: z
+		.string()
+		.min(2 * ENCODED_CHAR, "Input sentence is too short, enter a full sentence")
+		.max(200 * ENCODED_CHAR, "Input sentence is too long, enter a single sentence at a time")
+		.trim(),
+});
 
 export async function POST(req: Request) {
 	const error = validateRequest(req);
@@ -20,7 +33,39 @@ export async function POST(req: Request) {
 		);
 	}
 
-	const data = await req.json();
+	// Parse and validate request body
+	let data;
+	try {
+		const rawBody = await req.json();
+		const parseResult = RequestBodySchema.safeParse(rawBody);
+
+		if (!parseResult.success) {
+			return NextResponse.json(
+				{
+					error: {
+						message: "Invalid request body",
+						details: parseResult.error.issues.map((issue) => issue.message).join(", "),
+						code: CLIENT_ERROR_CODES.INVALID_INPUT,
+					},
+				},
+				{ status: 400 },
+			);
+		}
+
+		data = parseResult.data;
+	} catch {
+		return NextResponse.json(
+			{
+				error: {
+					message: "Invalid JSON in request body",
+					details: "",
+					code: CLIENT_ERROR_CODES.INVALID_INPUT,
+				},
+			},
+			{ status: 400 },
+		);
+	}
+
 	const input = decodeURIComponent(data.input);
 	const key = input;
 
@@ -81,17 +126,12 @@ export async function POST(req: Request) {
 function validateRequest(req: Request): ClientError | undefined {
 	const contentLength = req.headers.get("content-length");
 	if (contentLength) {
-		if (parseInt(contentLength) > 1024) {
+		if (parseInt(contentLength) > 2048) {
 			return new ClientError(
-				"Input sentence is too long, enter a single sentence at a time.",
+				"Request body is too large.",
 				CLIENT_ERROR_CODES.INPUT_SIZE,
 				"",
 				413,
-			);
-		} else if (parseInt(contentLength) < 18) {
-			return new ClientError(
-				"Input sentence is too short, enter a full sentence.",
-				CLIENT_ERROR_CODES.INPUT_SIZE,
 			);
 		}
 	}

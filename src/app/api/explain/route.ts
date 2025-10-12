@@ -13,7 +13,7 @@ import type { ExplainAnswer } from "@/types";
 // These are formatted as %XX, so one character is 3x3=9.
 const ENCODED_CHAR = 9;
 
-const cache = new LRUCache<string, ExplainAnswer>(100);
+const cache = new LRUCache<string, ExplainAnswer>(500);
 const pendingRequests = new Map<string, Promise<ExplainAnswer>>();
 
 // Input validation schema

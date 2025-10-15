@@ -7,12 +7,13 @@ import { type FragmentList, getWordFragments } from "@/app/utils/get-word-fragme
 import styles from "./explainer.module.css";
 import Loader from "./elements/loader";
 import Card from "./elements/card";
+import { useModel } from "../providers/model";
 
-const fetcher = async (input: string) => {
+const fetcher = async ({ input, model }: { input: string; model: string }) => {
 	try {
 		const response = await fetch("/api/explain", {
 			method: "POST",
-			body: JSON.stringify({ input }),
+			body: JSON.stringify({ input, model }),
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -46,11 +47,16 @@ function getHighlightedWords(
 }
 
 export default function Explainer({ input }: { input: string }) {
-	const { data, isLoading, error } = useSWR<ExplainResponse | ExplainError>(input, fetcher, {
-		// Don't need to revalidate, the language isn't going to change.
-		revalidateOnFocus: false,
-		revalidateOnReconnect: false,
-	});
+	const { model } = useModel();
+	const { data, isLoading, error } = useSWR<ExplainResponse | ExplainError>(
+		{ input, model },
+		fetcher,
+		{
+			// Don't need to revalidate, the language isn't going to change.
+			revalidateOnFocus: false,
+			revalidateOnReconnect: false,
+		},
+	);
 
 	if (error) {
 		// This is a request-level error (malformed response, etc), ideally

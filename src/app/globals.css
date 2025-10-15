@@ -119,6 +119,17 @@ input[type="text"]:focus {
 	outline: 1px dashed currentcolor;
 }
 
+input,
+select,
+textarea,
+button {
+	font: inherit;
+}
+
+label {
+	display: block;
+}
+
 /* Text meant only for screen readers. */
 .screen-reader-text {
 	border: 0;

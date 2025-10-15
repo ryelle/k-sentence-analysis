@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans_KR, IBM_Plex_Sans, Orbit } from "next/font/google";
 import "./globals.css";
 import { HistoryProvider } from "./providers/history";
+import { ModelProvider } from "./providers/model";
 
 const fontIBMPlexKR = IBM_Plex_Sans_KR({
 	weight: ["400", "500"],
@@ -33,7 +34,9 @@ export default function RootLayout({
 			<body
 				className={`${fontIBMPlexKR.variable} ${fontIBMPlex.variable} ${fontOrbit.variable}`}
 			>
-				<HistoryProvider>{children}</HistoryProvider>
+				<ModelProvider>
+					<HistoryProvider>{children}</HistoryProvider>
+				</ModelProvider>
 			</body>
 		</html>
 	);

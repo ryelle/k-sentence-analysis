@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { generateObject, LanguageModel, NoObjectGeneratedError, TypeValidationError } from "ai";
 import { openai } from "@ai-sdk/openai";
 import { anthropic } from "@ai-sdk/anthropic";
+import { google } from "@ai-sdk/google";
 import { z } from "zod";
 
 import { isKorean } from "@/app/utils/is-korean";
@@ -18,7 +19,16 @@ const pendingRequests = new Map<string, Promise<ExplainAnswer>>();
 
 // Input validation schema
 const RequestBodySchema = z.object({
-	model: z.enum(["openai", "anthropic"]).default("openai"),
+	model: z
+		.enum([
+			"anthropic-claude-sonnet-4-5",
+			"anthropic-claude-sonnet-4",
+			"anthropic-claude-haiku-3-5",
+            "gemini-2-5-pro",
+			"openai-gpt-5",
+			"openai-gpt-5-nano",
+		])
+		.default("openai-gpt-5-nano"),
 	input: z
 		.string()
 		.min(2 * ENCODED_CHAR, "Input sentence is too short, enter a full sentence")
@@ -53,7 +63,7 @@ export async function POST(req: Request) {
 	// Parse and validate request body
 	let input, model;
 	try {
-        validateRequest(req);
+		validateRequest(req);
 		const data = parseRequest(await req.json());
 		model = data.model;
 		input = data.input;
@@ -176,12 +186,7 @@ async function generateExplanation({
 }): Promise<ExplainAnswer> {
 	console.log(`Cache miss for  ${input}, requesting from ${model}.`);
 
-	let chosenModel: LanguageModel;
-	if (model === "anthropic") {
-		chosenModel = anthropic("claude-sonnet-4-20250514");
-	} else {
-		chosenModel = openai("gpt-5-nano");
-	}
+	const chosenModel: LanguageModel = getModel(model);
 
 	const result = await generateObject({
 		model: chosenModel,
@@ -198,4 +203,22 @@ async function generateExplanation({
 	}
 
 	return result.object;
+}
+
+function getModel(model: string): LanguageModel {
+	switch (model) {
+		case "anthropic-claude-sonnet-4-5":
+			return anthropic("claude-sonnet-4-5-20250929");
+		case "anthropic-claude-sonnet-4":
+			return anthropic("claude-sonnet-4-20250514");
+		case "anthropic-claude-haiku-3-5":
+			return anthropic("claude-3-5-haiku-20241022");
+		case "gemini-2-5-pro":
+            return google("gemini-2.5-pro");
+        case "openai-gpt-5":
+			return openai("gpt-5-2025-08-07");
+		case "openai-gpt-5-nano":
+		default:
+			return openai("gpt-5-nano-2025-08-07");
+	}
 }

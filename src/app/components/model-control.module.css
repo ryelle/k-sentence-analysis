@@ -1,0 +1,22 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--spacing) * 0.5);
+}
+
+.label {
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	line-height: 1.2;
+}
+
+.select {
+	padding: calc(var(--spacing) * 0.5);
+	width: 100%;
+	font-size: 1rem;
+	line-height: 1.6;
+	border: 2px solid var(--foreground-02);
+	border-radius: 8px;
+	background: transparent;
+}

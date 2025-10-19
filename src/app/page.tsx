@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container, Main, Sidebar } from "@/app/components/layout";
 import Input from "@/app/components/elements/input";
+import { DEFAULT_MODEL } from "./utils/models";
 
 const examples = [
 	"아이스 아메리카노 두 잔 주세요.",
@@ -32,7 +33,7 @@ export default function Home() {
 					</ul>
 				</div>
 				<p>
-					This uses ChatGPT 4.1 nano to break down sentences into component parts
+					This uses the selected AI provider (default: {DEFAULT_MODEL}) to break down sentences into component parts
 					for studying Korean. It will output a translation with grammar points for
 					reference.
 				</p>

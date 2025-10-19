@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { generateObject, LanguageModel, NoObjectGeneratedError, TypeValidationError } from "ai";
+import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { openai } from "@ai-sdk/openai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { google } from "@ai-sdk/google";
@@ -9,6 +10,7 @@ import { isKorean } from "@/app/utils/is-korean";
 import { ClientError, CLIENT_ERROR_CODES } from "@/app/utils/errors";
 import LRUCache from "@/app/utils/cache";
 import type { ExplainAnswer } from "@/types";
+import { DEFAULT_MODEL, getModelDetails, MODELS } from "@/app/utils/models";
 
 // A CJK character is URL encoded to 3 bytes in UTF-8 format by URI encoding.
 // These are formatted as %XX, so one character is 3x3=9.
@@ -19,16 +21,7 @@ const pendingRequests = new Map<string, Promise<ExplainAnswer>>();
 
 // Input validation schema
 const RequestBodySchema = z.object({
-	model: z
-		.enum([
-			"anthropic-claude-sonnet-4-5",
-			"anthropic-claude-sonnet-4",
-			"anthropic-claude-haiku-3-5",
-            "gemini-2-5-pro",
-			"openai-gpt-5",
-			"openai-gpt-5-nano",
-		])
-		.default("openai-gpt-5-nano"),
+	model: z.enum(MODELS.map((m) => m.name)).default(DEFAULT_MODEL),
 	input: z
 		.string()
 		.min(2 * ENCODED_CHAR, "Input sentence is too short, enter a full sentence")
@@ -188,10 +181,19 @@ async function generateExplanation({
 
 	const chosenModel: LanguageModel = getModel(model);
 
+	const prompt = `Can you break down the Korean grammar and vocabulary in the following sentence? Identify and translate all of the words into English, include the exact phrase in the sentence. Identify some key grammatical constructions to know, and explain them in English. Reply in the provided JSON format.\n${input}\n${JSON.stringify(
+		z.toJSONSchema(ResponseSchema),
+	)}`;
+
 	const result = await generateObject({
 		model: chosenModel,
 		schema: ResponseSchema,
-		prompt: `Can you break down the Korean grammar and vocabulary in the following sentence? Identify and translate all of the words into English, include the exact phrase in the sentence. Identify some key grammatical constructions to know, and explain them in English.\n${input}`,
+		prompt,
+		providerOptions: {
+			openai: {
+				structuredOutputs: true,
+			},
+		},
 	});
 
 	if (result.object.sentence !== input) {
@@ -205,20 +207,21 @@ async function generateExplanation({
 	return result.object;
 }
 
-function getModel(model: string): LanguageModel {
-	switch (model) {
-		case "anthropic-claude-sonnet-4-5":
-			return anthropic("claude-sonnet-4-5-20250929");
-		case "anthropic-claude-sonnet-4":
-			return anthropic("claude-sonnet-4-20250514");
-		case "anthropic-claude-haiku-3-5":
-			return anthropic("claude-3-5-haiku-20241022");
-		case "gemini-2-5-pro":
-            return google("gemini-2.5-pro");
-        case "openai-gpt-5":
-			return openai("gpt-5-2025-08-07");
-		case "openai-gpt-5-nano":
-		default:
-			return openai("gpt-5-nano-2025-08-07");
+function getModel(modelName: string): LanguageModel {
+	const model = getModelDetails(modelName);
+	if (model.name.startsWith("anthropic")) {
+		return anthropic(model.id);
+	} else if (model.name.startsWith("gemini")) {
+		return google(model.id);
+	} else if (model.name.startsWith("solar")) {
+		const args = {
+			baseURL: "https://api.upstage.ai/v1",
+			name: "upstage",
+			apiKey: process.env.UPSTAGEAI_API_KEY,
+			supportsStructuredOutputs: true,
+		};
+		return createOpenAICompatible(args).chatModel(model.id);
+	} else {
+		return openai(model.id);
 	}
 }

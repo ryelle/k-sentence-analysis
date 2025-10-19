@@ -1,24 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
-
-type Model = string;
-
-type ModelContextType = {
-	model: Model;
-	availableModels: Array<{ name: string; label: string }>;
-	setModel: (slug: string) => void;
-};
-
-const DEFAULT_MODEL = "openai-gpt-5-nano";
-const MODELS = [
-    { name: "anthropic-claude-sonnet-4-5", label: "Claude Sonnet 4.5" },
-    { name: "anthropic-claude-sonnet-4", label: "Claude Sonnet 4" },
-    { name: "anthropic-claude-haiku-3-5", label: "Claude Haiku 3.5" },
-    { name: "gemini-2-5-pro", label:"Gemini" },
-    { name: "openai-gpt-5", label: "ChatGPT 5" },
-    { name: "openai-gpt-5-nano", label: "ChatGPT 5 (nano)" },
-];
+import { DEFAULT_MODEL, MODELS } from "../utils/models";
+import type { ModelContextType, Model } from "@/types";
 
 const ModelContext = createContext<ModelContextType | undefined>(undefined);
 

@@ -29,3 +29,13 @@ export type ExplainError = {
 	};
 	result: false;
 };
+
+export type Model = string;
+
+export type ModelDetails = { id: string; name: Model; label: string };
+
+export type ModelContextType = {
+	model: Model;
+	availableModels: ModelDetails[];
+	setModel: (slug: string) => void;
+};

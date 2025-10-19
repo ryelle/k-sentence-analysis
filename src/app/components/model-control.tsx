@@ -9,7 +9,6 @@ export default function ModelControl() {
 	const updateModel = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		setModel(event.target.value);
 	};
-    console.log(model);
     
 	return (
 		<div className={styles.container}>

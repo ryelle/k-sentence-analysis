@@ -93,6 +93,7 @@ export default function Explainer({ input }: { input: string }) {
 					<p>{example}</p>
 				</div>
 			))}
+			<div aria-hidden={true} style={{ height: "calc(var(--spacing) * 2)" }} />
 		</Card>
 	);
 }

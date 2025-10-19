@@ -1,6 +1,6 @@
 import { Model, ModelDetails } from "@/types";
 
-export const DEFAULT_MODEL: Model = "solar-pro";
+export const DEFAULT_MODEL: Model = "openai-gpt-5-nano";
 
 export const MODELS: ModelDetails[] = [
 	{

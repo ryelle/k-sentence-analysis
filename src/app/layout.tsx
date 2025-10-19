@@ -6,16 +6,19 @@ import { ModelProvider } from "./providers/model";
 
 const fontIBMPlexKR = IBM_Plex_Sans_KR({
 	weight: ["400", "500"],
+    preload: false,
 	variable: "--font-ibm-plex-kr",
 });
 
 const fontIBMPlex = IBM_Plex_Sans({
 	weight: "variable",
+    preload: false,
 	variable: "--font-ibm-plex",
 });
 
 const fontOrbit = Orbit({
 	weight: "400",
+    preload: false,
 	variable: "--font-orbit",
 });
 

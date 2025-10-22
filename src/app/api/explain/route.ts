@@ -181,9 +181,7 @@ async function generateExplanation({
 
 	const chosenModel: LanguageModel = getModel(model);
 
-	const prompt = `Can you break down the Korean grammar and vocabulary in the following sentence? Identify and translate all of the words into English, include the exact phrase in the sentence. Identify some key grammatical constructions to know, and explain them in English. Reply in the provided JSON format.\n${input}\n${JSON.stringify(
-		z.toJSONSchema(ResponseSchema),
-	)}`;
+	const prompt = `Can you break down the Korean grammar and vocabulary in the following sentence? Identify and translate all of the words into English, include the exact phrase in the sentence. Identify some key grammatical constructions to know, and explain them in English. Reply in the provided JSON format.\n${input}`;
 
 	const result = await generateObject({
 		model: chosenModel,
@@ -219,6 +217,15 @@ function getModel(modelName: string): LanguageModel {
 			name: "upstage",
 			apiKey: process.env.UPSTAGEAI_API_KEY,
 			supportsStructuredOutputs: true,
+			fetch: async (url: string | Request | URL, options?: RequestInit | undefined) => {
+				if (!options) {
+					return await fetch(url, options);
+				}
+				const data = JSON.parse(options.body as string);
+				data.response_format.json_schema.strict = true;
+				options.body = JSON.stringify(data);
+				return await fetch(url, options);
+			},
 		};
 		return createOpenAICompatible(args).chatModel(model.id);
 	} else {

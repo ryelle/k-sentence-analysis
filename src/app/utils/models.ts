@@ -1,6 +1,7 @@
 import { Model, ModelDetails } from "@/types";
 
-export const DEFAULT_MODEL: Model = "openai-gpt-5-nano";
+export const DEFAULT_MODEL: Model = "solar-pro";
+// export const DEFAULT_MODEL: Model = "openai-gpt-5-nano";
 
 export const MODELS: ModelDetails[] = [
 	{
@@ -45,9 +46,9 @@ export function getModelDetails(modelName: string): ModelDetails {
 	if (model) {
 		return model;
 	}
-    model = MODELS.find((m) => m.name === DEFAULT_MODEL);
+	model = MODELS.find((m) => m.name === DEFAULT_MODEL);
 	if (model) {
 		return model;
 	}
-    return MODELS[0];
+	return MODELS[0];
 }

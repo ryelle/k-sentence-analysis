@@ -1,7 +1,6 @@
 import { Model, ModelDetails } from "@/types";
 
-export const DEFAULT_MODEL: Model = "solar-pro";
-// export const DEFAULT_MODEL: Model = "openai-gpt-5-nano";
+export const DEFAULT_MODEL: Model = "anthropic-claude-haiku-4-5";
 
 export const MODELS: ModelDetails[] = [
 	{
@@ -10,18 +9,13 @@ export const MODELS: ModelDetails[] = [
 		label: "Claude Sonnet 4.5",
 	},
 	{
-		id: "claude-sonnet-4-20250514",
-		name: "anthropic-claude-sonnet-4",
-		label: "Claude Sonnet 4",
+		id: "claude-haiku-4-5-20251001",
+		name: "anthropic-claude-haiku-4-5",
+		label: "Claude Haiku 4.5",
 	},
 	{
-		id: "claude-3-5-haiku-20241022",
-		name: "anthropic-claude-haiku-3-5",
-		label: "Claude Haiku 3.5",
-	},
-	{
-		id: "gemini-2.5-pro",
-		name: "gemini-2-5-pro",
+		id: "gemini-3-pro-preview",
+		name: "gemini-3-pro",
 		label: "Gemini",
 	},
 	{
@@ -37,7 +31,7 @@ export const MODELS: ModelDetails[] = [
 	{
 		id: "solar-pro2",
 		name: "solar-pro",
-		label: "Solar Pro",
+		label: "Solar Pro (broken)",
 	},
 ];
 

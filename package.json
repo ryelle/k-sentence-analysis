@@ -10,31 +10,30 @@
     "test": "jest"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^3.0.39",
-    "@ai-sdk/google": "^3.0.22",
-    "@ai-sdk/openai": "^3.0.26",
-    "@ai-sdk/openai-compatible": "^2.0.28",
-    "@ai-sdk/react": "^3.0.79",
-    "ai": "^6.0.77",
-    "next": "16.1.6",
-    "react": "19.2.4",
-    "react-aria-components": "^1.15.1",
-    "react-dom": "19.2.4",
-    "swr": "^2.4.0",
-    "zod": "^4.3.6"
+    "@ai-sdk/anthropic": "^4.0.18",
+    "@ai-sdk/google": "^4.0.21",
+    "@ai-sdk/openai": "^4.0.17",
+    "@ai-sdk/openai-compatible": "^3.0.14",
+    "@ai-sdk/react": "^4.0.37",
+    "ai": "^7.0.34",
+    "next": "16.2.11",
+    "react": "19.2.8",
+    "react-aria-components": "^1.19.0",
+    "react-dom": "19.2.8",
+    "swr": "^2.4.2",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@types/node": "^24.7.2",
-    "@types/react": "19.2.13",
+    "@types/node": "^26.1.1",
+    "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
-    "eslint": "^9.39.2",
-    "eslint-config-next": "16.1.6",
-    "jest": "^30.2.0",
-    "ts-jest": "^29.4.6",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.2.11",
+    "jest": "^30.4.2",
     "typescript": "^5.9.3"
   },
   "overrides": {
-    "@types/react": "19.2.13",
+    "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3"
   }
 }
